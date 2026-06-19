@@ -1,0 +1,13 @@
+# Executables
+*.exe
+
+# Object files
+*.o
+
+# Build output
+build/
+bin/
+
+# Temporary files
+*.tmp
+*.log
