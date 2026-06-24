@@ -11,4 +11,4 @@ Embedded systems interview preparation and practice.
 - Bit manipulation
 - FreeRTOS
 - Communication protocols
-- Interview questions
+- Skills resources
