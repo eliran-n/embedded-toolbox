@@ -69,6 +69,7 @@ MOVE_DIR rotary_encoder( uint8_t a, uint8_t b )
             dir = UNDEFINED;
             break;
     }
+    
     last_state = current_state;
     return dir;
 }
