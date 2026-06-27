@@ -1,11 +1,11 @@
-# Embedded Practice
+# Embedded Firmware & System Design
 
-Embedded systems interview preparation and practice.
+Embedded software development focusing on low-level programming
 
 ## Topics
 
-- C fundamentals
-- C++
+- Embedded C
+- C++ for embedded systems
 - Data structures
 - Algorithms
 - Bit manipulation
