@@ -12,6 +12,12 @@ static mutex_t mutex;
 
 static uint32_t shared_counter = 0;
 
+bool mutex_take(  mutex_t* mutex_handler );
+bool mutex_give( mutex_t* mutex_handler );
+bool mutex_init( mutex_t* mutex_handler );
+void increment_shared_counter( void );
+void read_shared_counter( void );
+
 bool mutex_take(  mutex_t* mutex_handler )
 {   
     if ( mutex_handler == NULL )
@@ -63,7 +69,7 @@ bool mutex_init( mutex_t* mutex_handler )
     return true;
 }
 
-void task1( void )
+void increment_shared_counter( void )
 {
     if( mutex_take(&mutex) )
     {
@@ -73,7 +79,7 @@ void task1( void )
     //printf("Increment counter++\n");
 }
 
-void task2( void )
+void read_shared_counter( void )
 {
     uint32_t counter_val = 0;
 
@@ -89,8 +95,8 @@ int main( void )
 {   
     while(1)
     {
-        task1();
-        task2();
+        increment_shared_counter();
+        read_shared_counter();
     }
 
     return 0;
