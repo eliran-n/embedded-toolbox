@@ -96,6 +96,23 @@ uint32_t calculate_power( uint32_t base, uint32_t power )
     return result;
 }
 
+uint32_t calculate_power_binary_exponentiation( uint32_t base, uint32_t power )
+{
+    uint32_t result = 1;
+
+    while ( power != 0 )
+    {
+        if ( (power & 1) == 1 )
+        {
+            result = result * base;
+        }
+        base = base*base;
+        power = power >> 1;
+    }
+    
+    return result;
+}
+
 int main( void )
 {
     uint32_t result;
@@ -137,7 +154,7 @@ int main( void )
 
     result = divide_by_2(8);
     printf("Devide 8/2 = %u\n", result);
-
+// 
     // 0000 0000 0000 0000 0000 0000 0000 0001
     // 1000 0000 0000 0000 0000 0000 0000 0000
     result = reverse_bits(1);
@@ -145,6 +162,9 @@ int main( void )
 
     result = calculate_power(3, 2);
     printf("3^2 = %u\n", result);
+
+    result = calculate_power_binary_exponentiation(3, 13);
+    printf("3^5 = %u\n", result);
 
     return 0;
 }
