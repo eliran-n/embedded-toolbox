@@ -88,6 +88,60 @@ void print_linked_list( Node* head )
     }
 }
 
+// head -> A - > B -> C -> null
+// ---------------------------
+// head -> C -> B-> A - > NULL
+
+/*
+key points to remember:
+save next
+change link
+move prev
+move current
+*/
+
+/*
+    We want A to point to NULL (to prev).
+    But if we do it first (current->next = prev),
+    we will lose the connection between A and [B -> C -> NULL].
+
+    Therefore, we first save the next node:
+    next = current->next;
+
+    Then we change the arrow of A to point to prev:
+    current->next = prev;
+
+    After that, prev moves to the current node:
+    prev = current;
+
+    And current moves to the next node:
+    current = next.
+
+    The loop stop condition is when current becomes NULL.
+    We also need to reverse the connection of the last node,
+    so we continue until current reaches the end of the list.
+
+    The return pointer is prev because when current is NULL,
+    prev points to the last processed node, which becomes
+    the new head of the reversed linked list.
+*/
+
+Node* reverse_linked_list( Node* head )
+{
+    Node* prev = NULL;
+    Node* current = head;
+    Node* next = NULL;
+
+    while ( current != NULL )
+    {
+        next = current->next;
+        current->next = prev;
+        prev = current;
+        current = next;
+    }
+    return prev;
+}
+
 int main( void )
 {
     // define an empty linked list
