@@ -1,6 +1,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 typedef struct Node
 {
@@ -140,6 +141,128 @@ Node* reverse_linked_list( Node* head )
         current = next;
     }
     return prev;
+}
+
+//head-> node0-> node1-> null
+
+uint32_t linked_list_count_elemnts( Node* head )
+{
+    if ( head == NULL )
+    {
+        return 0;
+    }
+
+    uint32_t counter = 0;
+
+    while( head != NULL )
+    {
+        counter++;
+        head = head->next;
+    }
+
+    return counter;
+}
+
+bool get_val_by_index( Node* head, uint32_t index, uint32_t* node_val )
+{
+    if ( head == NULL )
+    {
+        return false;
+    }
+
+    uint32_t current_index = 0;
+
+    while(head != NULL)
+    {
+        if ( current_index == index )
+        {
+            *node_val = head->value;
+            return true;
+        }
+        head = head->next;
+        current_index++;
+    }
+    return false;
+}
+
+bool linked_list_is_palindrome( Node* head )
+{
+    uint32_t num_of_nodes = linked_list_count_elemnts( head );
+
+    uint32_t node_left;
+    uint32_t node_right;
+
+    for ( uint32_t i=0; i<(num_of_nodes/2); i++ )
+    {
+        if ( !get_val_by_index(head, i, &node_left) )
+        {
+            return false;
+        }
+
+        if ( !get_val_by_index(head, num_of_nodes-1-i, &node_right) )
+        {
+            return false;
+        }
+        
+        if ( node_left != node_right )
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
+bool linked_list_is_palindrome_effective( Node* head )
+{
+    if ( head == NULL )
+    {
+        return false;
+    }
+
+    if ( head->next == NULL )
+    {
+        return true;
+    }
+
+    uint32_t index = 0;
+    Node* reversed_list_head = head;
+    uint32_t nodes_num = linked_list_count_elemnts(head);
+    Node* prev = NULL;
+
+    // set the address of the revered linked list head
+    while(index < (nodes_num/2))
+    {
+        prev = reversed_list_head;
+        reversed_list_head = reversed_list_head->next;
+        index++;
+    }
+    prev->next = NULL; // cut the linked list into half (seperate it from the right list)
+
+    prev = NULL;
+    Node* current = reversed_list_head;
+    Node* next = NULL;
+
+    // reserve the right linked list
+    while ( current != NULL )
+    {
+        next = current->next;
+        current->next = prev;
+        prev = current;
+        current = next;
+    }
+    reversed_list_head = prev;
+
+    // compare value vs value
+    while ( head != NULL && reversed_list_head != NULL )
+    {
+        if ( head->value != reversed_list_head->value )
+        {
+            return false;
+        }
+        head = head->next;
+        reversed_list_head = reversed_list_head->next;
+    }
+    return true;
 }
 
 int main( void )
