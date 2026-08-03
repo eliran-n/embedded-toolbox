@@ -1,6 +1,12 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+/*
+ * Given two strings, write a function to check if one is a permutation (anagram) 
+ * of the other (i.e., both strings contain the exact same characters with the exact same 
+ * frequencies, regardless of order).
+ */
+
 uint8_t string_len( char* str )
 {
     uint8_t len = 0;
