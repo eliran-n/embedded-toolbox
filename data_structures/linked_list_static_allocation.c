@@ -160,11 +160,11 @@ move current
     the new head of the reversed linked list.
 */
 
-Node* reverse_linked_list( Node* head )
+Node_t* reverse_linked_list( Node_t* head )
 {
-    Node* prev = NULL;
-    Node* current = head;
-    Node* next = NULL;
+    Node_t* prev = NULL;
+    Node_t* current = head;
+    Node_t* next = NULL;
 
     while ( current != NULL )
     {

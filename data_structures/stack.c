@@ -95,6 +95,53 @@ bool stack_init( stack_t* stack_ptr )
     return true;
 }
 
+bool stack_validate_palindrome( uint32_t number, stack_t* stack )
+{
+    uint32_t num_len = 0;
+    uint32_t lsb_digit;
+    uint32_t temp = number;
+    uint32_t divider;
+    uint32_t next_digit;
+    int32_t popped_val;
+
+    // counter num of digits
+    while( temp )
+    {
+        temp = temp/10;
+        num_len++;
+    }
+
+    // push half digits to the stack
+    temp = number;    
+    for (uint32_t i=0; i<(num_len/2); i++)
+    {
+        lsb_digit = temp % 10;
+        stack_push(stack, lsb_digit);
+        temp = temp/10;
+    }
+
+    // skip on the middle value in case of odd number
+    if ( num_len % 2 !=0 )
+    {
+        temp = temp/10;
+    }
+    
+    // compare digits
+    for (uint32_t j=0; j<(num_len/2); j++)
+    {
+        stack_pop(stack, &popped_val);
+
+        next_digit = temp % 10;
+
+        if ( next_digit != popped_val )
+        {
+            return false;
+        }
+        temp = temp/10;
+    }
+    return true;
+}
+
 int main( void )
 {
     stack_t stack;
