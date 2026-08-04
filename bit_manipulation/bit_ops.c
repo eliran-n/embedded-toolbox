@@ -113,6 +113,33 @@ uint32_t calculate_power_binary_exponentiation( uint32_t base, uint32_t power )
     return result;
 }
 
+// o(n) - worst case
+uint32_t clear_the_first_bit_is_on( uint32_t number )
+{
+    const uint32_t bit_len = 32;
+    uint32_t index = 0;
+
+    uint32_t original_number = number;
+
+    while(index<bit_len)
+    {
+        if ( (number & 1) == 1 )
+        {
+            original_number = original_number & (~(1U << index));
+            break;
+        }
+        number = number >> 1;
+        index++;
+    }
+    return original_number;
+}
+
+// o(1) - solution
+uint32_t clear_the_first_bit_is_on_optimized( uint32_t number )
+{
+    return ( number & (number - 1));
+}
+
 int main( void )
 {
     uint32_t result;
@@ -165,6 +192,9 @@ int main( void )
 
     result = calculate_power_binary_exponentiation(3, 13);
     printf("3^5 = %u\n", result);
+
+    result = clear_the_first_bit_is_on(12);
+    printf("The value of the number after clearing the first bit is ON: %u\n", result);
 
     return 0;
 }
