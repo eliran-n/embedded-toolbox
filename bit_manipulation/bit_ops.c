@@ -114,6 +114,9 @@ uint32_t calculate_power_binary_exponentiation( uint32_t base, uint32_t power )
 }
 
 // o(n) - worst case
+// reminder: In C standard 1 i consider signed number - but 1 as a number is positive
+// when shifting number which was positive and then it become negative - it's consider as signed overflow by
+// the language. this why we must use 1U - to treat the number as unsigned number,
 uint32_t clear_the_first_bit_is_on( uint32_t number )
 {
     const uint32_t bit_len = 32;
