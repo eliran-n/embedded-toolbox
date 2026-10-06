@@ -84,7 +84,7 @@ bool init_timers( timer_srv_t* pool_addr, uint32_t max_timers )
 
 timer_srv_t* allocate_timer( timer_srv_t** free_list )
 {
-    if ( free_list == NULL )
+    if ( free_list == NULL || *free_list == NULL)
     {
         return NULL;
     }

@@ -39,6 +39,14 @@ typedef struct timer_srv_t
 static timer_srv_t timers_srv[MAX_TIMERS];
 static volatile uint32_t time_counter = 0;
 
+/*
+ * In the function prototype, this:
+ * timer_cb func_ptr
+ *
+ * is equivalent to:
+ * void (*func_ptr)(void)
+ */
+
 bool config_timer( timer_srv_t* srv_ptr, timer_cb func_ptr, uint32_t period, bool periodic, bool active_flag )
 {
     if (srv_ptr == NULL)
@@ -132,12 +140,12 @@ bool free_timer(timer_srv_t* timer)
     return true;
 }
 
-void task1( void )
+void timer1_callback( void )
 {
     //....
 }
 
-void task2( void )
+void timer2_callback( void )
 {
     //....
 }
@@ -194,11 +202,27 @@ int main( void )
     // init all timers
     init_timers( timers_srv );
 
+    // allocate timer
     timer_srv_t* timer1 = allocate_timer( timers_srv );
+
+    // check if allocation not failed
+    if ( timer1 == NULL )
+    {
+        printf("failed to allocate timer\n");
+        return -1;
+    }
+
+    // check if allocation not failed
     timer_srv_t* timer2 = allocate_timer( timers_srv );
 
-    config_timer( timer1, task1, 500, true, 1);   // periodic timer - every 500ms
-    config_timer( timer2, task1, 120, false, 1);  // oneshot timer - trigger once after 120ms
+    if ( timer2 == NULL )
+    {
+        printf("failed to allocate timer\n");
+        return -1;
+    }
+
+    config_timer( timer1, timer1_callback, 500, true, 1);   // periodic timer - every 500ms
+    config_timer( timer2, timer2_callback, 120, false, 1);  // oneshot timer - trigger once after 120ms
 
     // super loop
     while(1)

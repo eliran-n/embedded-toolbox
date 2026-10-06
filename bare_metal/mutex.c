@@ -8,8 +8,10 @@ typedef struct mutex
     void* ownership;  // fucntion pointer - ownership
 } mutex_t;
 
+// mutex handler
 static mutex_t mutex;
 
+// shared counter
 static uint32_t shared_counter = 0;
 
 bool mutex_take(  mutex_t* mutex_handler );
@@ -93,6 +95,13 @@ void read_shared_counter( void )
 
 int main( void )
 {   
+    // init the mutex handler 
+    if ( !mutex_init(&mutex) )
+    {
+        printf("failed to init mutex handler\n");
+        return -1;
+    }
+
     while(1)
     {
         increment_shared_counter();

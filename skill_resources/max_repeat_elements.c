@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdint.h>
-
+#include <stdbool.h>
+#include <stdlib.h>
 
 // find the max repeated (identical) nubmers in a given array
 // for example: [12, 7, 1, 4, 6, 12, 16, 12, 4]
@@ -125,11 +126,11 @@ int32_t max_repeat_elements_linked_list(int32_t* arr, uint32_t k_elemnts)
     uint32_t hash_code;
     uint32_t i;
 
-    // assign the array of pointers - it will allocate in the FLASH (better if there're many elements)
+    // Dynamic allocation: the array of pointers is allocated on the heap
     Node_t** arr_ptr = malloc(sizeof(Node_t*)*k_elemnts);
 
-    // This is static allocation (array of pointers) - if not many element - this will allocated on the Stack
-    // Node_t* arr_ptr[k_elemnts]
+    // VLA (Variable Length Array): automatically allocated on the stack
+    // Node_t *arr_ptr[k_elements];
 
     // initialize the array pointers with NULL
     for (i=0; i<k_elemnts; i++)
@@ -152,31 +153,36 @@ int32_t max_repeat_elements_linked_list(int32_t* arr, uint32_t k_elemnts)
             }
             arr_ptr[hash_code]->counter += 1;
         }
-        // save value in the bucket
-        else if ( arr_ptr[hash_code] != NULL && arr_ptr[hash_code]->value == arr[i] )
-        {
-            arr_ptr[hash_code]->counter += 1;
-        }
-        // collision case
         else
-        {
+        {   
             Node_t* current_node = arr_ptr[hash_code];
+            bool value_exist = false;
+            
+            // backup for not losing the last node
+            Node_t* prev_node = current_node;
 
-            while (current_node->next != NULL )
+            while (current_node != NULL)
             {
+                if (current_node->value == arr[i])
+                {
+                    current_node->counter += 1;
+                    value_exist = true;
+                    break;
+                }
+                prev_node = current_node;
                 current_node = current_node->next;
             }
-            // allocated new node
-            Node_t* new_node = allocate_new_node(arr[i]);
-
-            if ( new_node == NULL )
+            // in case of collision - create new bucket and chain it to the end
+            if (!value_exist)
             {
-                return -1;
+                Node_t* new_node = allocate_new_node(arr[i]);
+                if (new_node == NULL)
+                {
+                    return -1;
+                }
+                prev_node->next = new_node;
+                new_node->counter += 1;
             }
-            // increment the counter
-            new_node->counter += 1;
-            // assign the address of the new node to current->next
-            current_node->next = new_node;
         }
     }
 
